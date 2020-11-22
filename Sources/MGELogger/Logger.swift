@@ -190,7 +190,7 @@ private extension Logger {
   /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
   private func truncatedMessage(_ string: String) -> Message {
-    return string.count >= maxMessagesLength ?
+    string.count >= maxMessagesLength ?
       string.prefix(maxMessagesLength).appending(Logger.truncatingToken) : string
   }
 }
