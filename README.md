@@ -1,3 +1,3 @@
 # MGELogger
 
-A description of this package.
+⚠️ Currently in development 👨🏾‍💻
