@@ -19,8 +19,10 @@ public final class Logger {
   
   // MARK: - Stored Properties
   
-  /// The level for messages of this logger. Default level is `info`.
-  public let logLevel: LogLevel
+  /// The level for messages of this logger.
+  /// All the message with a higher level are going to be printed.
+  /// Default level is `info`.
+  public let minimumLogLevel: LogLevel
   
   /// The max characters length of a log message. Any message longer than this value will be truncated.
   /// Default value is `20_000`.
@@ -32,11 +34,11 @@ public final class Logger {
   // MARK: - Init
   
   public init(
-    logLevel: LogLevel = .info,
+    minimumLogLevel: LogLevel = .info,
     maxMessagesLength: Int = 20_000,
     timestampFormatter: DateFormatter? = nil
   ) {
-    self.logLevel = logLevel
+    self.minimumLogLevel = minimumLogLevel
     self.maxMessagesLength = maxMessagesLength
     
     if let timestampFormatter = timestampFormatter {
@@ -139,7 +141,7 @@ private extension Logger {
   ) {
     guard
       isEnabled,
-      level.rawValue >= self.logLevel.rawValue
+      level.rawValue >= minimumLogLevel.rawValue
     else {
       return
     }

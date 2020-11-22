@@ -10,7 +10,7 @@ import MGELogger
 
 class ViewController: UIViewController {
   
-  let logger = Logger(logLevel: .trace)
+  let logger = Logger(minimumLogLevel: .trace)
 
   override func viewDidLoad() {
     super.viewDidLoad()
