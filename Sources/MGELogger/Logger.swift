@@ -65,7 +65,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .trace, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .trace, file: file, line: line, function: function)
   }
 
   /// Logs with debug level.
@@ -187,10 +187,10 @@ private extension Logger {
   }
   
   /// Truncates the given message if needed.
-  /// - Parameter message: message to be trunked.
+  /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
-  private func truncatedMessage(_ message: Message) -> Message {
-    return message.count >= maxMessagesLength ?
-      message.prefix(maxMessagesLength).appending(Logger.truncatingToken) : message
+  private func truncatedMessage(_ string: String) -> Message {
+    return string.count >= maxMessagesLength ?
+      string.prefix(maxMessagesLength).appending(Logger.truncatingToken) : string
   }
 }
