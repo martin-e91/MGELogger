@@ -65,7 +65,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .trace, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .trace, file: file, line: line, function: function)
   }
 
   /// Logs with debug level.
@@ -79,7 +79,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .debug, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .debug, file: file, line: line, function: function)
   }
 
   /// Logs with info level.
@@ -93,7 +93,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .info, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .info, file: file, line: line, function: function)
   }
 
   /// Logs with warning level.
@@ -107,7 +107,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .warning, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .warning, file: file, line: line, function: function)
   }
   
   /// Logs with error level.
@@ -121,7 +121,7 @@ public extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    log(title: title, message: message, for: .error, file: file, line: line, function: function)
+    log(title: title, message: "\(message)", for: .error, file: file, line: line, function: function)
   }
 }
 
@@ -131,7 +131,7 @@ private extension Logger {
   /// Formats and logs the given message.
   private func log(
     title: String,
-    message: Message,
+    message: String,
     for level: LogLevel,
     file: String = #file,
     line: UInt = #line,
@@ -187,10 +187,10 @@ private extension Logger {
   }
   
   /// Truncates the given message if needed.
-  /// - Parameter message: message to be trunked.
+  /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
-  private func truncatedMessage(_ message: Message) -> Message {
-    return message.count >= maxMessagesLength ?
-      message.prefix(maxMessagesLength).appending(Logger.truncatingToken) : message
+  private func truncatedMessage(_ string: String) -> Message {
+    return string.count >= maxMessagesLength ?
+      string.prefix(maxMessagesLength).appending(Logger.truncatingToken) : string
   }
 }

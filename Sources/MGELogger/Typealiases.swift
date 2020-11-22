@@ -8,7 +8,7 @@ import Foundation
 
 public extension Logger {
   /// Syntactic sugar for a logger message.
-  typealias Message = String
+  typealias Message = Any
 }
 
 // MARK: - S
