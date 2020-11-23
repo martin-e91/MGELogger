@@ -2,9 +2,19 @@
 
 ⚠️ Currently in development 👨🏾‍💻
 
+
+
+## Features 
+
+- Console logging 
+
+  
+
 ## Example
 
 To run the example project, clone this repo, and open MGELogger.xcworkspace from the iOS Example directory.
+
+
 
 ## Usage 
 
@@ -48,6 +58,8 @@ Network Response
 
 Requires iOS 9.0.
 
+
+
 ## Installation
 
 Add this to your project using Swift Package Manager. 
@@ -58,9 +70,12 @@ In Xcode that is simply: 'File > Swift Packages > Add Package Dependency...' pas
 Feel free to give your contribution or open a <a href="https://github.com/martin-e91/MGELogger/issues/new/choose">new issue</a>! 😄
 
 
+
+
 ## Author
 
 Martin Essuman
+
 
 
 ## License
