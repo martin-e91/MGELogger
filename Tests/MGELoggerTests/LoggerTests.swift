@@ -41,13 +41,6 @@ final class LoggerTests: XCTestCase {
     sut.enable()
     XCTAssertFalse(sut.isDisabled)
   }
-  
-  func testEqualConfigurations() {
-    let sut = Logger.defaultConfiguration
-
-    XCTAssertTrue(sut.isEqual(to: Logger.defaultConfiguration))
-    XCTAssertFalse(sut.isEqual(to: MockLoggerConfiguration()))
-  }
 }
 
 // MARK: - Helpers
