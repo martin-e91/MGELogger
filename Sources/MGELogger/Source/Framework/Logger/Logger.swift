@@ -121,6 +121,7 @@ public final class Logger {
 // MARK: - Private Helpers
 
 private extension Logger {
+  /// The `String` timestamp of `Date()`.
   var currentTimestamp: String {
     timestampFormatter.string(from: Date())
   }

@@ -16,6 +16,36 @@ final class LoggerTests: XCTestCase {
     XCTAssertEqual(sut.timestampFormatter, expectedConfiguration.timestampFormatter)
   }
   
+  func testLowerLogLevel() {
+    let sut = Logger(with: MockLoggerConfiguration())
+    
+    precondition(sut.minimumLogLevel == .warning)
+    
+    sut.change(minimumLogLevel: .info)
+    
+    XCTAssertEqual(sut.minimumLogLevel, .info)
+  }
+  
+  func testBumpLogLevel() {
+    let sut = Logger(with: MockLoggerConfiguration())
+    
+    precondition(sut.minimumLogLevel == .warning)
+    
+    sut.change(minimumLogLevel: .error)
+    
+    XCTAssertEqual(sut.minimumLogLevel, .error)
+  }
+  
+  func testChangeWithSameLogLevel() {
+    let sut = Logger(with: MockLoggerConfiguration())
+    
+    precondition(sut.minimumLogLevel == .warning)
+    
+    sut.change(minimumLogLevel: .warning)
+    
+    XCTAssertEqual(sut.minimumLogLevel, .warning)
+  }
+  
   func testDisableLogger() {
     let sut = Logger(with: MockLoggerConfiguration())
     
@@ -49,7 +79,7 @@ private extension LoggerTests {
   struct MockLoggerConfiguration: LoggerConfiguration {
     var truncatingToken: String { "..." }
     
-    var minimumLogLevel: Logger.LogLevel = .error
+    var minimumLogLevel: Logger.LogLevel = .warning
     
     var maxMessagesLength: UInt = 100
     
