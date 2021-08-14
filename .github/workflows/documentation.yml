@@ -1,20 +1,21 @@
-name: Generate Documentation Script (Jazzy)
+name: Generate Documentation (Jazzy)
 
 on:
   push:
     branches:
-      - master
-      - develop
-  pull_request:
-    branches:
-      - '*'
+    - master
+    - develop
+  workflow_dispatch:
+  release:
+    types: [ published ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
+  publish:
+    runs-on: macos-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Generate Documentation
-        run: ./generate_doc.sh
+    – uses: actions/checkout@v2
+    – name: Publish Jazzy Docs
+      uses: steven0351/publish-jazzy-docs@v1
+      with:
+        personal_access_token: ${{ secrets.ACCESS_TOKEN }}
+        config: .jazzy.yaml
