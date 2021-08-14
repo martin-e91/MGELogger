@@ -11,12 +11,7 @@ public enum Logger {
   
   /// Whether the logger is enabled or not.
   public private(set) static var isEnabled: Bool = true
-  
-  /// Whether the logger is disabled or not.
-  public static var isDisabled: Bool {
-    !isEnabled
-  }
-  
+
   /// The token appended at the end of a truncated string.
   public static let truncatingToken = "<..>"
   

@@ -4,6 +4,17 @@
 
 import Foundation
 
+// MARK: - Public Extensions
+
+public extension Logger {
+  /// Whether the logger is disabled or not.
+  static var isDisabled: Bool {
+    !isEnabled
+  }
+}
+
+// MARK: - Internal Extensions
+
 extension Logger {
   /// The default configuration for the logger.
   static var defaultConfiguration: LoggerConfiguration {
