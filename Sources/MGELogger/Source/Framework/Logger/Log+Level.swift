@@ -44,6 +44,8 @@ public extension Logger.Log {
   }
 }
 
+// MARK: - Comparable Conformance
+
 extension Logger.Log.Level: Comparable {
   public static func < (lhs: Logger.Log.Level, rhs: Logger.Log.Level) -> Bool {
     lhs.rawValue < rhs.rawValue

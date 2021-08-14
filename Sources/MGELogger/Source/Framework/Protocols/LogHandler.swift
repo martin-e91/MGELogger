@@ -8,5 +8,5 @@ import Foundation
 public protocol LogHandler {
   /// Handles the given message properly.
   /// - Parameter message: The message to be handled.
-  func handleLog(_ message: Logger.Message)
+  func log(_ message: Logger.Message)
 }

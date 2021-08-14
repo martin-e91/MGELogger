@@ -10,7 +10,7 @@ import XCTest
 final class MockLogHandler: LogHandler {
   var messages: [Logger.Message] = []
 
-  func handleLog(_ message: Logger.Message) {
+  func log(_ message: Logger.Message) {
     messages.append(message)
   }
 }

@@ -73,7 +73,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    formatAndHandleLog(
+    formatAndLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .trace, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -85,7 +85,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func debug(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    formatAndHandleLog(
+    formatAndLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .debug, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -97,7 +97,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func info(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    formatAndHandleLog(
+    formatAndLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .info, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -109,7 +109,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func warning(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    formatAndHandleLog(
+    formatAndLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .warning, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -121,7 +121,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func error(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    formatAndHandleLog(
+    formatAndLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .error, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -138,14 +138,14 @@ private extension Logger {
   }
 
   /// Formats and logs the given message.
-  func formatAndHandleLog(title: String, message: String, context: Context) {
+  func formatAndLog(title: String, message: String, context: Context) {
     guard isEnabled, context.logLevel >= minimumLogLevel else {
       return
     }
     
     let formattedMessage = format(title: title, message: message, context: context)
 
-    logHandler.handleLog(formattedMessage)
+    logHandler.log(formattedMessage)
   }
 
   /// Formats the given message.
