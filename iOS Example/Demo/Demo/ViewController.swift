@@ -8,9 +8,9 @@
 import UIKit
 import MGELogger
 
+let logger = Logger.self
+
 class ViewController: UIViewController {
-  
-  let logger = Logger(minimumLogLevel: .trace)
 
   override func viewDidLoad() {
     super.viewDidLoad()
