@@ -10,7 +10,7 @@ import MGELogger
 
 class ViewController: UIViewController {
   private struct CustomLoggerConfiguration: LoggerConfiguration {
-    var minimumLogLevel: Logger.LogLevel { .trace }
+    var minimumLogLevel: Logger.Log.Level { .trace }
 
     var maxMessagesLength: UInt { 1000 }
     

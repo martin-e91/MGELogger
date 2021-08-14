@@ -26,7 +26,7 @@ public final class Logger {
   /// The level for messages of this logger.
   /// All the message with a higher level are going to be printed.
   /// Default level is `info`.
-  private(set) var minimumLogLevel: LogLevel
+  private(set) var minimumLogLevel: Log.Level
   
   // MARK: - Init
 
@@ -43,7 +43,7 @@ public final class Logger {
   
   /// Updates the `minimumLogLevel` with the given one.
   /// - Parameter minimumLogLevel: The new log level to be set.
-  public func change(minimumLogLevel: LogLevel) {
+  public func change(minimumLogLevel: Log.Level) {
     self.minimumLogLevel = minimumLogLevel
   }
   

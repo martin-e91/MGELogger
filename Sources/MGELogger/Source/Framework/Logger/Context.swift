@@ -15,7 +15,7 @@ public extension Logger {
     let timestamp: String
     
     /// The log level for the event.
-    let logLevel: LogLevel
+    let logLevel: Log.Level
 
     /// The path of the file in which the event logged happened.
     let filePath: String
@@ -37,7 +37,7 @@ public extension Logger {
     
     /// Creates a new `Context` instance.
     /// - Important: This initializer was declared **only** for allowing the testing of `timestamp`.
-    internal init(logLevel: Logger.LogLevel, timestamp: String, filePath: String, line: UInt, function: String) {
+    internal init(logLevel: Logger.Log.Level, timestamp: String, filePath: String, line: UInt, function: String) {
       self.timestamp = timestamp
       self.logLevel = logLevel
       self.filePath = filePath

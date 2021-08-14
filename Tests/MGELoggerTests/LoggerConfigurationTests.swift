@@ -21,7 +21,7 @@ private extension LoggerConfigurationTests {
   struct MockLoggerConfiguration: LoggerConfiguration {
     var truncatingToken: String { "..." }
     
-    var minimumLogLevel: Logger.LogLevel = .error
+    var minimumLogLevel: Logger.Log.Level = .error
     
     var maxMessagesLength: UInt = 100
     

@@ -4,9 +4,9 @@
 
 import Foundation
 
-public extension Logger {
+public extension Logger.Log {
   /// Log level for the `Logger` used to determinate what to omit from logging output.
-  enum LogLevel: Severity {
+  enum Level: Severity {
     /// Messages that contains information only when debugging a program.
     case trace
     
@@ -44,8 +44,8 @@ public extension Logger {
   }
 }
 
-extension Logger.LogLevel: Comparable {
-  public static func < (lhs: Logger.LogLevel, rhs: Logger.LogLevel) -> Bool {
+extension Logger.Log.Level: Comparable {
+  public static func < (lhs: Logger.Log.Level, rhs: Logger.Log.Level) -> Bool {
     lhs.rawValue < rhs.rawValue
   }
 }

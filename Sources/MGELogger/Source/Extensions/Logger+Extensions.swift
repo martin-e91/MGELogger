@@ -23,11 +23,13 @@ public extension Logger {
 fileprivate extension Logger {
   /// The default configuration for the `Logger`.
   struct DefaultConfiguration: LoggerConfiguration {
-    public let minimumLogLevel: Logger.LogLevel = .info
+    let destination: Logger.Log.Destination = .console
     
-    public let maxMessagesLength: UInt = 20_000
+    let minimumLogLevel: Logger.Log.Level = .info
     
-    public let timestampFormatter: DateFormatter = {
+    let maxMessagesLength: UInt = 20_000
+    
+    let timestampFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.locale = .current
       formatter.timeZone = .current

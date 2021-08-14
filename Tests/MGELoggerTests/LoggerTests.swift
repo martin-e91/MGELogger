@@ -79,7 +79,7 @@ private extension LoggerTests {
   struct MockLoggerConfiguration: LoggerConfiguration {
     var truncatingToken: String { "..." }
     
-    var minimumLogLevel: Logger.LogLevel = .warning
+    var minimumLogLevel: Logger.Log.Level = .warning
     
     var maxMessagesLength: UInt = 100
     
