@@ -74,18 +74,30 @@ final class LoggerTests: XCTestCase {
     XCTAssertFalse(sut.isDisabled)
   }
   
+  func testNoLogsWhenDisabled() {
+    let mockLogHandler = MockLogHandler()
+
+    let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
+    sut.disable()
+    sut.trace(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
+    
+    XCTAssertTrue(sut.logHandler is MockLogHandler)
+    XCTAssertTrue(mockLogHandler.messages.isEmpty)
+  }
+  
   func testTraceMessage() throws {
     let mockLogHandler = MockLogHandler()
 
     let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
     sut.trace(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
+    let expectedLine = #line - 1
     
     XCTAssertTrue(sut.logHandler is MockLogHandler)
     XCTAssertEqual(mockLogHandler.messages.count, 1)
     let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
     let timestamp = Self.dateFormatter.string(from: Date())
     
-    XCTAssertEqual(resultMessage, "[\(timestamp)] 🤔 TRACE: LoggerTests.swift:81: testTraceMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
+    XCTAssertEqual(resultMessage, "[\(timestamp)] 🤔 TRACE: LoggerTests.swift:\(expectedLine): testTraceMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
   
   func testDebugMessage() throws {
@@ -93,12 +105,13 @@ final class LoggerTests: XCTestCase {
 
     let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
     sut.debug(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
-    
+    let expectedLine = #line - 1
+
     XCTAssertTrue(sut.logHandler is MockLogHandler)
     XCTAssertEqual(mockLogHandler.messages.count, 1)
     let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
     let timestamp = Self.dateFormatter.string(from: Date())
-    XCTAssertEqual(resultMessage, "[\(timestamp)] 🐞 DEBUG: LoggerTests.swift:95: testDebugMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
+    XCTAssertEqual(resultMessage, "[\(timestamp)] 🐞 DEBUG: LoggerTests.swift:\(expectedLine): testDebugMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
   
   func testInfoMessage() throws {
@@ -106,12 +119,13 @@ final class LoggerTests: XCTestCase {
 
     let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
     sut.info(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
+    let expectedLine = #line - 1
     
     XCTAssertTrue(sut.logHandler is MockLogHandler)
     XCTAssertEqual(mockLogHandler.messages.count, 1)
     let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
     let timestamp = Self.dateFormatter.string(from: Date())
-    XCTAssertEqual(resultMessage, "[\(timestamp)] ℹ️ INFO: LoggerTests.swift:108: testInfoMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
+    XCTAssertEqual(resultMessage, "[\(timestamp)] ℹ️ INFO: LoggerTests.swift:\(expectedLine): testInfoMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
   
   func testWarningMessage() throws {
@@ -119,12 +133,13 @@ final class LoggerTests: XCTestCase {
 
     let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
     sut.warning(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
-    
+    let expectedLine = #line - 1
+
     XCTAssertTrue(sut.logHandler is MockLogHandler)
     XCTAssertEqual(mockLogHandler.messages.count, 1)
     let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
     let timestamp = Self.dateFormatter.string(from: Date())
-    XCTAssertEqual(resultMessage, "[\(timestamp)] ⚠️ WARNING: LoggerTests.swift:121: testWarningMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
+    XCTAssertEqual(resultMessage, "[\(timestamp)] ⚠️ WARNING: LoggerTests.swift:\(expectedLine): testWarningMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
   
   func testErrorMessage() throws {
@@ -132,12 +147,13 @@ final class LoggerTests: XCTestCase {
 
     let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
     sut.error(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
-    
+    let expectedLine = #line - 1
+
     XCTAssertTrue(sut.logHandler is MockLogHandler)
     XCTAssertEqual(mockLogHandler.messages.count, 1)
     let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
     let timestamp = Self.dateFormatter.string(from: Date())
-    XCTAssertEqual(resultMessage, "[\(timestamp)] ⛔️ ERROR: LoggerTests.swift:134: testErrorMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
+    XCTAssertEqual(resultMessage, "[\(timestamp)] ⛔️ ERROR: LoggerTests.swift:\(expectedLine): testErrorMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
   
   func testTruncatingMessage() throws {
