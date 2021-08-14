@@ -1,0 +1,20 @@
+name: Generate Documentation Script (Jazzy)
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Generate Documentation
+        run: ./generate_doc.sh
