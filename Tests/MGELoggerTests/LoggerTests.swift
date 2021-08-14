@@ -7,23 +7,17 @@ import XCTest
 @testable import MGELogger
 
 final class LoggerTests: XCTestCase {
-  override func setUp() {
-    Logger.resetConfigurationAndEnableLogger()
-  }
-  
   func testInitWithConfigurationCorrectness() {
-    let mockConfiguration = MockLoggerConfiguration()
-
-    let sut = Logger.self
-    sut.apply(configuration: mockConfiguration)
+    let expectedConfiguration = MockLoggerConfiguration()
+    let sut = Logger(with: expectedConfiguration)
     
-    XCTAssertEqual(sut.maxMessagesLength, mockConfiguration.maxMessagesLength)
-    XCTAssertEqual(sut.minimumLogLevel, mockConfiguration.minimumLogLevel)
-    XCTAssertEqual(sut.timestampFormatter, mockConfiguration.timestampFormatter)
+    XCTAssertEqual(sut.maxMessagesLength, expectedConfiguration.maxMessagesLength)
+    XCTAssertEqual(sut.minimumLogLevel, expectedConfiguration.minimumLogLevel)
+    XCTAssertEqual(sut.timestampFormatter, expectedConfiguration.timestampFormatter)
   }
   
   func testDisableLogger() {
-    let sut = Logger.self
+    let sut = Logger(with: MockLoggerConfiguration())
     
     XCTAssertTrue(sut.isEnabled)
     sut.disable()
@@ -31,7 +25,7 @@ final class LoggerTests: XCTestCase {
   }
   
   func testEnableLogger() {
-    let sut = Logger.self
+    let sut = Logger(with: MockLoggerConfiguration())
     
     XCTAssertTrue(sut.isEnabled)
     sut.enable()
@@ -39,19 +33,13 @@ final class LoggerTests: XCTestCase {
   }
   
   func testIsDisabled() {
-    let sut = Logger.self
+    let sut = Logger(with: MockLoggerConfiguration())
     
     XCTAssertFalse(sut.isDisabled)
     sut.disable()
     XCTAssertTrue(sut.isDisabled)
     sut.enable()
     XCTAssertFalse(sut.isDisabled)
-  }
-  
-  func testResetConfiguration() {
-    let sut = Logger.self
-    
-    sut.apply(configuration: MockLoggerConfiguration())
   }
   
   func testEqualConfigurations() {
@@ -66,6 +54,8 @@ final class LoggerTests: XCTestCase {
 
 private extension LoggerTests {
   struct MockLoggerConfiguration: LoggerConfiguration {
+    var truncatingToken: String { "..." }
+    
     var minimumLogLevel: Logger.LogLevel = .error
     
     var maxMessagesLength: UInt = 100
