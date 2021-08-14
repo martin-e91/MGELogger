@@ -19,5 +19,4 @@ jobs:
     - name: Build
       run: swift build -v
     - name: Run tests
-      run: xcodebuild test -scheme MGELogger -destination platform=iOS Simulator
-
+      run: swift test -v
