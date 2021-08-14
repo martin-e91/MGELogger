@@ -1,4 +1,0 @@
-name: GitHub Action for SwiftLint
-# You may pin to the exact commit or the version.
-# uses: norio-nomura/action-swiftlint@9f4dcd7fd46b4e75d7935cf2f4df406d5cae3684
-uses: norio-nomura/action-swiftlint@3.2.1
