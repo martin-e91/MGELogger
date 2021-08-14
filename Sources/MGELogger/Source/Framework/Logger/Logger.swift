@@ -140,7 +140,7 @@ private extension Logger {
       return
     }
     
-    let formattedMessage = format(title: title, message: message, for: level, file: file, line: line, function: function)
+    let formattedMessage = format(title: title, message: message, for: level, context: Context(filePath: file, line: line, function: function))
     
     #if DEBUG
     print(formattedMessage)
@@ -150,22 +150,14 @@ private extension Logger {
   /// Formats the given message.
   /// - Parameter message: message to be formatter.
   /// - Returns: a new formatted message.
-  static func format(
-    title: String,
-    message: Message,
-    for level: LogLevel,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) -> Message {
+  static func format(title: String, message: Message, for level: LogLevel, context: Context) -> Message {
     let timestamp = timestampFormatter.string(from: Date())
-    let fileName = self.fileName(from: file)
 
     let formattedMessage =
       """
 
       ========
-      [\(timestamp)] \(level.token): \(fileName):\(line): \(function):
+      [\(timestamp)] \(level.token): \(context.description):
       \(title)
 
       \(message)
