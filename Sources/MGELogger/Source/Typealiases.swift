@@ -8,10 +8,12 @@ import Foundation
 
 public extension Logger {
   /// Syntactic sugar for a logger message.
-  typealias Message = Any
+  typealias Message = String
 }
 
 // MARK: - S
 
-/// Syntactic sugar for severity of the log levels.
-public typealias Severity = Int
+public extension Logger.Log {
+  /// Syntactic sugar for severity of the log levels.
+  typealias Severity = Int
+}
