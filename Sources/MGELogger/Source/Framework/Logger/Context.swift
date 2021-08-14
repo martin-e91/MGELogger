@@ -6,7 +6,14 @@ import Foundation
 
 public extension Logger {
   /// The logged event metadata.
+  /// - Note: It conforms to `CustomStringConvertible` in order to print it directly.
   struct Context {
+    /// The timestamp of when event logged happened.
+    let timestamp = Date()
+    
+    /// The log level for the event.
+    let logLevel: LogLevel
+
     /// The path of the file in which the event logged happened.
     let filePath: String
 
@@ -25,6 +32,6 @@ public extension Logger {
 
 extension Logger.Context: CustomStringConvertible {
   public var description: String {
-    "\(fileName):\(line): \(function)"
+    "[\(timestamp)] \(logLevel.token): \(fileName):\(line): \(function)"
   }
 }

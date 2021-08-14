@@ -64,63 +64,39 @@ public enum Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public static func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    log(title: title, message: "\(message)", for: .trace, file: file, line: line, function: function)
+    handleLog(title: title, message: "\(message)", context: Context(logLevel: .trace, filePath: file, line: line, function: function))
   }
 
   /// Logs with debug level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func debug(
-    title: String,
-    message: Message,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
-    log(title: title, message: "\(message)", for: .debug, file: file, line: line, function: function)
+  public static func debug(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(title: title, message: "\(message)", context: Context(logLevel: .debug, filePath: file, line: line, function: function))
   }
 
   /// Logs with info level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func info(
-    title: String,
-    message: Message,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
-    log(title: title, message: "\(message)", for: .info, file: file, line: line, function: function)
+  public static func info(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(title: title, message: "\(message)", context: Context(logLevel: .info, filePath: file, line: line, function: function))
   }
 
   /// Logs with warning level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func warning(
-    title: String,
-    message: Message,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
-    log(title: title, message: "\(message)", for: .warning, file: file, line: line, function: function)
+  public static func warning(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(title: title, message: "\(message)", context: Context(logLevel: .warning, filePath: file, line: line, function: function))
   }
   
   /// Logs with error level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func error(
-    title: String,
-    message: Message,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
-    log(title: title, message: "\(message)", for: .error, file: file, line: line, function: function)
+  public static func error(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(title: title, message: "\(message)", context: Context(logLevel: .error, filePath: file, line: line, function: function))
   }
 }
 
@@ -128,19 +104,12 @@ public enum Logger {
 
 private extension Logger {
   /// Formats and logs the given message.
-  static func log(
-    title: String,
-    message: String,
-    for level: LogLevel,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
-    guard Self.isEnabled, level.rawValue >= minimumLogLevel.rawValue else {
+  static func handleLog(title: String, message: String, context: Context) {
+    guard Self.isEnabled, context.logLevel >= minimumLogLevel else {
       return
     }
     
-    let formattedMessage = format(title: title, message: message, for: level, context: Context(filePath: file, line: line, function: function))
+    let formattedMessage = format(title: title, message: message, context: context)
     
     #if DEBUG
     print(formattedMessage)
@@ -150,23 +119,15 @@ private extension Logger {
   /// Formats the given message.
   /// - Parameter message: message to be formatter.
   /// - Returns: a new formatted message.
-  static func format(title: String, message: Message, for level: LogLevel, context: Context) -> Message {
-    let timestamp = timestampFormatter.string(from: Date())
-
+  static func format(title: String, message: Message, context: Context) -> Message {
     let formattedMessage =
       """
-
-      ========
-      [\(timestamp)] \(level.token): \(context.description):
-      \(title)
-
-      \(message)
-
-      ========
+      \(context):
+      \(title): \(message)
 
       """
     
-    return truncatedMessage(formattedMessage)
+    return truncate(formattedMessage)
   }
   
   /// Returns the filename from the given file path.
@@ -179,7 +140,7 @@ private extension Logger {
   /// Truncates the given message if needed.
   /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
-  static func truncatedMessage(_ string: String) -> Message {
+  static func truncate(_ string: String) -> Message {
     string.count >= maxMessagesLength ?
       string.prefix(Int(maxMessagesLength)).appending(Self.truncatingToken) : string
   }
