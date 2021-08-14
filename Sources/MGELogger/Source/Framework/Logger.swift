@@ -11,11 +11,11 @@ public final class Logger {
   
   /// The token appended at the end of a truncated string.
   private static let truncatingToken = "<..>"
+  
+  // MARK: - Stored Properties
 
   /// Whether the logger is enabled or not.
   public var isEnabled: Bool = true
-  
-  // MARK: - Stored Properties
   
   /// The level for messages of this logger.
   /// All the message with a higher level are going to be printed.
@@ -27,7 +27,7 @@ public final class Logger {
   public let maxMessagesLength: UInt
   
   /// A `DateFormatter` for the timestamp in the log messages.
-  private let timestampFormatter: DateFormatter
+  public let timestampFormatter: DateFormatter
 
   // MARK: - Init
   
@@ -178,6 +178,6 @@ private extension Logger {
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
   private func truncatedMessage(_ string: String) -> Message {
     string.count >= maxMessagesLength ?
-      string.prefix(maxMessagesLength).appending(Logger.truncatingToken) : string
+      string.prefix(Int(maxMessagesLength)).appending(Logger.truncatingToken) : string
   }
 }
