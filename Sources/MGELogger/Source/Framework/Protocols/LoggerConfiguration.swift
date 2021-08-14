@@ -21,3 +21,20 @@ public protocol LoggerConfiguration {
   /// The token appended at the end of a truncated string.
   var truncatingToken: String { get }
 }
+
+public extension LoggerConfiguration {
+  
+  // Default Implementation
+  
+  var maxMessagesLength: UInt {
+    Logger.defaultConfiguration.maxMessagesLength
+  }
+
+  var timestampFormatter: DateFormatter {
+    Logger.defaultConfiguration.timestampFormatter
+  }
+  
+  var truncatingToken: String {
+    Logger.defaultConfiguration.truncatingToken
+  }
+}

@@ -15,14 +15,6 @@ class ViewController: UIViewController {
     var minimumLogLevel: Logger.Log.Level { .trace }
 
     var maxMessagesLength: UInt { 1000 }
-    
-    var timestampFormatter: DateFormatter {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "dd-MM-yyyy HH:MM:ssss"
-      return formatter
-    }
-    
-    var truncatingToken: String { "|.." }
   }
 
   let logger = Logger()
