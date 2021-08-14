@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MGELogger  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="MGELogger  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+          MGELogger Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/martin-e91/MGELogger/docs">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">MGELogger Reference</a>
+      <img class="carat" src="img/carat.png" />
+      MGELogger  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Logger.html">Logger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Logger/Context.html">– Context</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Logger/Log.html">– Log</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/LogHandler.html">LogHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/LoggerConfiguration.html">LoggerConfiguration</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            
+            <h1 id='mgelogger' class='heading'>MGELogger</h1>
+
+<p>A lightweight and easy to use logging module.</p>
+<h2 id='example' class='heading'>Example</h2>
+
+<p>To run the example project, clone this repo, and open MGELogger.xcworkspace from the iOS Example directory.</p>
+<h2 id='usage' class='heading'>Usage</h2>
+
+<p>Add the <code>import</code> statement</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">MGELogger</span>
+</code></pre>
+
+<p>Create a  <code><a href="Classes/Logger.html">Logger</a></code> instance. You may create a global variable for convenient access all around the project. </p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">logger</span> <span class="o">=</span> <span class="kt">Logger</span><span class="p">()</span>
+</code></pre>
+
+<p>Then you can log your message with any level you need:</p>
+<pre class="highlight swift"><code><span class="o">...</span>
+<span class="n">logger</span><span class="o">.</span><span class="nf">debug</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="s">"Network Response"</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="n">body</span><span class="o">.</span><span class="n">prettyPrinted</span><span class="p">)</span>
+<span class="o">...</span>
+</code></pre>
+
+<p>Output: </p>
+<pre class="highlight shell"><code><span class="o">[</span>21-08-14 06:50:38601] 🐞 DEBUG: NetworkProvider.swift:71: decodeBody<span class="o">()</span>:
+Network Response: 
+<span class="o">{</span>
+  <span class="s2">"address"</span>: <span class="o">{</span>
+    <span class="s2">"city"</span>: <span class="s2">"Naples"</span>,
+    <span class="s2">"coordinates"</span>: <span class="o">{</span>
+      <span class="s2">"latitude"</span>: 40.0,
+      <span class="s2">"longitude"</span>: 45.0
+    <span class="o">}</span>,
+    <span class="s2">"country"</span>: <span class="s2">"IT"</span>,
+    <span class="s2">"province"</span>: <span class="s2">"NA"</span>,
+    <span class="s2">"street"</span>: <span class="s2">"Via Toledo, 15"</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+<h2 id='requirements' class='heading'>Requirements</h2>
+
+<p>Requires iOS 9.0 or above.</p>
+<h2 id='installation' class='heading'>Installation</h2>
+
+<p>Add this to your project using Swift Package Manager. 
+In Xcode that is simply: &lsquo;File &gt; Swift Packages &gt; Add Package Dependency&hellip;&rsquo; paste this repo link and you&rsquo;re all set 👌🏾.</p>
+<h2 id='contributing' class='heading'>Contributing</h2>
+
+<p>Feel free to give your contribution or open a <a href="https://github.com/martin-e91/MGELogger/issues/new/choose">new issue</a>! 😄</p>
+<h2 id='author' class='heading'>Author</h2>
+
+<p>Martin Essuman (@martin-e91)</p>
+<h2 id='license' class='heading'>License</h2>
+
+<p>MGELogger is available under the MIT license. See <a href="LICENSE">the LICENSE file</a> for more information.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2021 <a class="link" href="http://github.com/martin-e91.com" target="_blank" rel="noopener" rel="external">Martin Essuman</a>. All rights reserved. (Last updated: 2021-08-15)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="noopener" rel="external">jazzy ♪♫ v0.14.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="noopener" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
