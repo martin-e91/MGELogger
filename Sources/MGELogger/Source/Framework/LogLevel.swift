@@ -43,3 +43,9 @@ public extension Logger {
     }
   }
 }
+
+extension Logger.LogLevel: Comparable {
+  public static func < (lhs: Logger.LogLevel, rhs: Logger.LogLevel) -> Bool {
+    lhs.rawValue < rhs.rawValue
+  }
+}

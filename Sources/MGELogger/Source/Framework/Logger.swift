@@ -4,7 +4,7 @@
 
 import Foundation
 
-/// A logger for console logging.
+/// A logger handling console logging.
 public enum Logger {
   
   // MARK: - Static properties
@@ -30,6 +30,7 @@ public enum Logger {
   static private(set) var maxMessagesLength: UInt = defaultConfiguration.maxMessagesLength
   
   /// A `DateFormatter` for the timestamp in the log messages.
+  /// Default format is `yy-MM-dd hh:mm:ssSSS` and `current` `locale` and `timeZone`.
   static private(set) var timestampFormatter: DateFormatter = defaultConfiguration.timestampFormatter
   
   // MARK: - Functions
@@ -146,7 +147,9 @@ private extension Logger {
     
     let formattedMessage = format(title: title, message: message, for: level, file: file, line: line, function: function)
     
+    #if DEBUG
     print(formattedMessage)
+    #endif
   }
 
   /// Formats the given message.
