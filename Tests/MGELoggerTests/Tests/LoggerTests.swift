@@ -139,6 +139,20 @@ final class LoggerTests: XCTestCase {
     let timestamp = Self.dateFormatter.string(from: Date())
     XCTAssertEqual(resultMessage, "[\(timestamp)] ⛔️ ERROR: LoggerTests.swift:134: testErrorMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n")
   }
+  
+  func testTruncatingMessage() throws {
+    let mockLogHandler = MockLogHandler()
+
+    let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler), maxMessagesLength: 10))
+    sut.error(title: "EXAMPLE_TITLE", message: "EXAMPLE_MESSAGE")
+    
+    let resultMessage = try XCTUnwrap(mockLogHandler.messages.first)
+    let timestamp = Self.dateFormatter.string(from: Date())
+    let expectedString = String("[\(timestamp)] ⛔️ ERROR: LoggerTests.swift:147: testErrorMessage():\nEXAMPLE_TITLE: EXAMPLE_MESSAGE\n".prefix(10))
+      .appending("...")
+
+    XCTAssertEqual(resultMessage, expectedString)
+  }
 }
 
 // MARK: - Helpers
@@ -159,12 +173,13 @@ private extension LoggerTests {
     
     var minimumLogLevel: Logger.Log.Level = .trace
     
-    var maxMessagesLength: UInt = 10000
+    var maxMessagesLength: UInt
     
     let timestampFormatter: DateFormatter = dateFormatter
     
-    init(with destination: Logger.Log.Destination = .console) {
+    init(with destination: Logger.Log.Destination = .console, maxMessagesLength: UInt = 1000) {
       self.destination = destination
+      self.maxMessagesLength = maxMessagesLength
     }
   }
 }
