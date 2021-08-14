@@ -1,82 +1,71 @@
 # MGELogger
 
-⚠️ Currently in development 👨🏾‍💻
-
-
-
-## Features 
-
-- Console logging 
-
-  
+A lightweight and easy to use logging module.
 
 ## Example
 
 To run the example project, clone this repo, and open MGELogger.xcworkspace from the iOS Example directory.
 
-
-
 ## Usage 
 
-Add import statement
+Add the `import` statement
 
 ```swift
 import MGELogger
 ```
 
-Create a `Logger` instance. Usually i create a global variable for convenient access all around the project. 
+Create a  `Logger` instance. You may create a global variable for convenient access all around the project. 
 
 ```swift
-let Log = Logger(minimumLogLevel: .debug)
+let logger = Logger()
 ```
 
 Then you can log your message with any level you need:
 
 ```swift
 ...
-Log.debug(title: "Network Response", message: body.prettyPrinted)
+logger.debug(title: "Network Response", message: body.prettyPrinted)
 ...
 ```
 
 Output: 
 
 ```shell
-========
-[20-11-22 03:48:58867] 🐞 DEBUG: ViewController.swift:21: viewDidLoad():
-Network Response
-
+[21-08-14 06:50:38601] 🐞 DEBUG: NetworkProvider.swift:71: decodeBody():
+Network Response: 
 {
-  "parameter": "value"
+  "address": {
+    "city": "Naples",
+    "coordinates": {
+      "latitude": 40.0,
+      "longitude": 45.0
+    },
+    "country": "IT",
+    "province": "NA",
+    "street": "Via Toledo, 15"
+   }
 }
-
-========
 ```
 
 
 
 ## Requirements
 
-Requires iOS 9.0.
-
-
+Requires iOS 9.0 or above.
 
 ## Installation
 
 Add this to your project using Swift Package Manager. 
-In Xcode that is simply: 'File > Swift Packages > Add Package Dependency...' paste this repo link and you're done.
+In Xcode that is simply: 'File > Swift Packages > Add Package Dependency...' paste this repo link and you're all set 👌🏾.
 
 ## Contributing 
 
 Feel free to give your contribution or open a <a href="https://github.com/martin-e91/MGELogger/issues/new/choose">new issue</a>! 😄
 
 
-
-
 ## Author
 
-Martin Essuman
-
-
+Martin Essuman (@martin-e91)
 
 ## License
 
