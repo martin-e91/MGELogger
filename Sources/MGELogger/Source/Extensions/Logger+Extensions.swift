@@ -4,14 +4,19 @@
 
 import Foundation
 
-public extension Logger {
-  /// Provides the default configuration for the `Logger`.
-  struct DefaultConfiguration: LoggerConfiguration {
-    let minimumLogLevel: Logger.LogLevel = .info
+extension Logger {
+  /// The default configuration for the logger.
+  static var defaultConfiguration: LoggerConfiguration {
+    DefaultConfiguration()
+  }
+
+  /// The default configuration for the `Logger`.
+  private struct DefaultConfiguration: LoggerConfiguration {
+    public let minimumLogLevel: Logger.LogLevel = .info
     
-    let maxMessagesLength: UInt = 20_000
+    public let maxMessagesLength: UInt = 20_000
     
-    let timestampFormatter: DateFormatter = {
+    public let timestampFormatter: DateFormatter = {
       let formatter = DateFormatter()
       formatter.locale = .current
       formatter.timeZone = .current

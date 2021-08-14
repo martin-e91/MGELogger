@@ -5,53 +5,69 @@
 import Foundation
 
 /// A logger for console logging.
-public final class Logger {
-
-  // MARK: - Stored properties
+public enum Logger {
+  
+  // MARK: - Static properties
+  
+  /// Whether the logger is enabled or not.
+  public private(set) static var isEnabled: Bool = true
+  
+  /// Whether the logger is disabled or not.
+  public static var isDisabled: Bool {
+    !isEnabled
+  }
   
   /// The token appended at the end of a truncated string.
-  private static let truncatingToken = "<..>"
-  
-  // MARK: - Stored Properties
-
-  /// Whether the logger is enabled or not.
-  public var isEnabled: Bool = true
+  public static let truncatingToken = "<..>"
   
   /// The level for messages of this logger.
   /// All the message with a higher level are going to be printed.
   /// Default level is `info`.
-  public let minimumLogLevel: LogLevel
+  static private(set) var minimumLogLevel: LogLevel = defaultConfiguration.minimumLogLevel
   
   /// The max characters length of a log message. Any message longer than this value will be truncated.
   /// Default value is `20_000`.
-  public let maxMessagesLength: UInt
+  static private(set) var maxMessagesLength: UInt = defaultConfiguration.maxMessagesLength
   
   /// A `DateFormatter` for the timestamp in the log messages.
-  public let timestampFormatter: DateFormatter
-
-  // MARK: - Init
+  static private(set) var timestampFormatter: DateFormatter = defaultConfiguration.timestampFormatter
   
-  public required init(configuration: LoggerConfiguration = DefaultConfiguration()) {
+  // MARK: - Functions
+
+  /// Applies the given configuration to the logger.
+  /// - Parameter configuration: The new configuration.
+  public static func apply(configuration: LoggerConfiguration) {
     minimumLogLevel = configuration.minimumLogLevel
     maxMessagesLength = configuration.maxMessagesLength
     timestampFormatter = configuration.timestampFormatter
   }
-}
+  
+  /// Reset the logger by applying the `DefaultConfiguration`.
+  public static func resetConfiguration() {
+    apply(configuration: defaultConfiguration)
+  }
+  
+  /// Reset the logger by applying the `DefaultConfiguration` and enables the logging.
+  public static func resetConfigurationAndEnableLogger() {
+    resetConfiguration()
+    enable()
+  }
+  
+  /// Enables the logging for the logger.
+  public static func enable() {
+    isEnabled = true
+  }
+  
+  /// Disables the logging for the logger.
+  public static func disable() {
+    isEnabled = false
+  }
 
-// MARK: - Public Helpers
-
-public extension Logger {
   /// Logs with trace level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  func trace(
-    title: String,
-    message: Message,
-    file: String = #file,
-    line: UInt = #line,
-    function: String = #function
-  ) {
+  public static func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
     log(title: title, message: "\(message)", for: .trace, file: file, line: line, function: function)
   }
 
@@ -59,7 +75,7 @@ public extension Logger {
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  func debug(
+  public static func debug(
     title: String,
     message: Message,
     file: String = #file,
@@ -73,7 +89,7 @@ public extension Logger {
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  func info(
+  public static func info(
     title: String,
     message: Message,
     file: String = #file,
@@ -87,7 +103,7 @@ public extension Logger {
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  func warning(
+  public static func warning(
     title: String,
     message: Message,
     file: String = #file,
@@ -101,7 +117,7 @@ public extension Logger {
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  func error(
+  public static func error(
     title: String,
     message: Message,
     file: String = #file,
@@ -116,7 +132,7 @@ public extension Logger {
 
 private extension Logger {
   /// Formats and logs the given message.
-  private func log(
+  static func log(
     title: String,
     message: String,
     for level: LogLevel,
@@ -124,10 +140,7 @@ private extension Logger {
     line: UInt = #line,
     function: String = #function
   ) {
-    guard
-      isEnabled,
-      level.rawValue >= minimumLogLevel.rawValue
-    else {
+    guard Self.isEnabled, level.rawValue >= minimumLogLevel.rawValue else {
       return
     }
     
@@ -139,7 +152,7 @@ private extension Logger {
   /// Formats the given message.
   /// - Parameter message: message to be formatter.
   /// - Returns: a new formatted message.
-  private func format(
+  static func format(
     title: String,
     message: Message,
     for level: LogLevel,
@@ -169,15 +182,15 @@ private extension Logger {
   /// Returns the filename from the given file path.
   /// - Parameter filePath: the file path that contains the file name.
   /// - Returns: the filename from the given file path.
-  private func fileName(from filePath: String) -> String {
+  static func fileName(from filePath: String) -> String {
     return filePath.components(separatedBy: "/").last ?? "nil_file_name"
   }
   
   /// Truncates the given message if needed.
   /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
-  private func truncatedMessage(_ string: String) -> Message {
+  static func truncatedMessage(_ string: String) -> Message {
     string.count >= maxMessagesLength ?
-      string.prefix(Int(maxMessagesLength)).appending(Logger.truncatingToken) : string
+      string.prefix(Int(maxMessagesLength)).appending(Self.truncatingToken) : string
   }
 }

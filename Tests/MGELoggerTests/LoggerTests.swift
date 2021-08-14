@@ -7,14 +7,58 @@ import XCTest
 @testable import MGELogger
 
 final class LoggerTests: XCTestCase {
+  override func setUp() {
+    Logger.resetConfigurationAndEnableLogger()
+  }
+  
   func testInitWithConfigurationCorrectness() {
     let mockConfiguration = MockLoggerConfiguration()
-    
-    let sut = Logger(configuration: mockConfiguration)
+
+    let sut = Logger.self
+    sut.apply(configuration: mockConfiguration)
     
     XCTAssertEqual(sut.maxMessagesLength, mockConfiguration.maxMessagesLength)
     XCTAssertEqual(sut.minimumLogLevel, mockConfiguration.minimumLogLevel)
     XCTAssertEqual(sut.timestampFormatter, mockConfiguration.timestampFormatter)
+  }
+  
+  func testDisableLogger() {
+    let sut = Logger.self
+    
+    XCTAssertTrue(sut.isEnabled)
+    sut.disable()
+    XCTAssertFalse(sut.isEnabled)
+  }
+  
+  func testEnableLogger() {
+    let sut = Logger.self
+    
+    XCTAssertTrue(sut.isEnabled)
+    sut.enable()
+    XCTAssertTrue(sut.isEnabled)
+  }
+  
+  func testIsDisabled() {
+    let sut = Logger.self
+    
+    XCTAssertFalse(sut.isDisabled)
+    sut.disable()
+    XCTAssertTrue(sut.isDisabled)
+    sut.enable()
+    XCTAssertFalse(sut.isDisabled)
+  }
+  
+  func testResetConfiguration() {
+    let sut = Logger.self
+    
+    sut.apply(configuration: MockLoggerConfiguration())
+  }
+  
+  func testEqualConfigurations() {
+    let sut = Logger.defaultConfiguration
+
+    XCTAssertTrue(sut.isEqual(to: Logger.defaultConfiguration))
+    XCTAssertFalse(sut.isEqual(to: MockLoggerConfiguration()))
   }
 }
 
