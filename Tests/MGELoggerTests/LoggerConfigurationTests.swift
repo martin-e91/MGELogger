@@ -19,6 +19,8 @@ final class LoggerConfigurationTests: XCTestCase {
 
 private extension LoggerConfigurationTests {
   struct MockLoggerConfiguration: LoggerConfiguration {
+    var destination: Logger.Log.Destination { .console }
+
     var truncatingToken: String { "..." }
     
     var minimumLogLevel: Logger.Log.Level = .error
