@@ -5,107 +5,129 @@
 import Foundation
 
 /// A logger handling console logging.
-public enum Logger {
+public final class Logger {
   
-  // MARK: - Static properties
+  // MARK: - Stored properties
   
   /// Whether the logger is enabled or not.
-  public private(set) static var isEnabled: Bool = true
+  public private(set) var isEnabled: Bool = true
 
   /// The token appended at the end of a truncated string.
-  public static let truncatingToken = "<..>"
+  let truncatingToken: String
+  
+  /// The max characters length of a log message. Any message longer than this value will be truncated.
+  /// Default value is `20_000`.
+  let maxMessagesLength: UInt
+  
+  /// A `DateFormatter` for the timestamp in the log messages.
+  /// Default format is `yy-MM-dd hh:mm:ssSSS` and `current` `locale` and `timeZone`.
+  let timestampFormatter: DateFormatter
   
   /// The level for messages of this logger.
   /// All the message with a higher level are going to be printed.
   /// Default level is `info`.
-  static private(set) var minimumLogLevel: LogLevel = defaultConfiguration.minimumLogLevel
+  private(set) var minimumLogLevel: LogLevel
   
-  /// The max characters length of a log message. Any message longer than this value will be truncated.
-  /// Default value is `20_000`.
-  static private(set) var maxMessagesLength: UInt = defaultConfiguration.maxMessagesLength
-  
-  /// A `DateFormatter` for the timestamp in the log messages.
-  /// Default format is `yy-MM-dd hh:mm:ssSSS` and `current` `locale` and `timeZone`.
-  static private(set) var timestampFormatter: DateFormatter = defaultConfiguration.timestampFormatter
-  
-  // MARK: - Functions
+  // MARK: - Init
 
   /// Applies the given configuration to the logger.
   /// - Parameter configuration: The new configuration.
-  public static func apply(configuration: LoggerConfiguration) {
+  public required init(with configuration: LoggerConfiguration = defaultConfiguration) {
     minimumLogLevel = configuration.minimumLogLevel
     maxMessagesLength = configuration.maxMessagesLength
     timestampFormatter = configuration.timestampFormatter
+    truncatingToken = configuration.truncatingToken
   }
   
-  /// Reset the logger by applying the `DefaultConfiguration`.
-  public static func resetConfiguration() {
-    apply(configuration: defaultConfiguration)
-  }
+  // MARK: - Functions
   
-  /// Reset the logger by applying the `DefaultConfiguration` and enables the logging.
-  public static func resetConfigurationAndEnableLogger() {
-    resetConfiguration()
-    enable()
-  }
-  
-  /// Enables the logging for the logger.
-  public static func enable() {
-    isEnabled = true
+  /// Updates the `minimumLogLevel` with the given one.
+  /// - Parameter minimumLogLevel: The new log level to be set.
+  public func change(minimumLogLevel: LogLevel) {
+    self.minimumLogLevel = minimumLogLevel
   }
   
   /// Disables the logging for the logger.
-  public static func disable() {
+  public func disable() {
     isEnabled = false
+  }
+  
+  /// Enables the logging for the logger.
+  public func enable() {
+    isEnabled = true
   }
 
   /// Logs with trace level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(title: title, message: "\(message)", context: Context(logLevel: .trace, filePath: file, line: line, function: function))
+  public func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(
+      title: title,
+      message: "\(message)",
+      context: Context(logLevel: .trace, timestamp: currentTimestamp, filePath: file, line: line, function: function)
+    )
   }
 
   /// Logs with debug level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func debug(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(title: title, message: "\(message)", context: Context(logLevel: .debug, filePath: file, line: line, function: function))
+  public func debug(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(
+      title: title,
+      message: "\(message)",
+      context: Context(logLevel: .debug, timestamp: currentTimestamp, filePath: file, line: line, function: function)
+    )
   }
 
   /// Logs with info level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func info(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(title: title, message: "\(message)", context: Context(logLevel: .info, filePath: file, line: line, function: function))
+  public func info(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(
+      title: title,
+      message: "\(message)",
+      context: Context(logLevel: .info, timestamp: currentTimestamp, filePath: file, line: line, function: function)
+    )
   }
 
   /// Logs with warning level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func warning(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(title: title, message: "\(message)", context: Context(logLevel: .warning, filePath: file, line: line, function: function))
+  public func warning(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(
+      title: title,
+      message: "\(message)",
+      context: Context(logLevel: .warning, timestamp: currentTimestamp, filePath: file, line: line, function: function)
+    )
   }
   
   /// Logs with error level.
   /// - Parameters:
   ///   - title: title to log.
   ///   - message: message to log.
-  public static func error(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(title: title, message: "\(message)", context: Context(logLevel: .error, filePath: file, line: line, function: function))
+  public func error(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
+    handleLog(
+      title: title,
+      message: "\(message)",
+      context: Context(logLevel: .error, timestamp: currentTimestamp, filePath: file, line: line, function: function)
+    )
   }
 }
 
 // MARK: - Private Helpers
 
 private extension Logger {
+  var currentTimestamp: String {
+    timestampFormatter.string(from: Date())
+  }
+
   /// Formats and logs the given message.
-  static func handleLog(title: String, message: String, context: Context) {
-    guard Self.isEnabled, context.logLevel >= minimumLogLevel else {
+  func handleLog(title: String, message: String, context: Context) {
+    guard isEnabled, context.logLevel >= minimumLogLevel else {
       return
     }
     
@@ -119,29 +141,21 @@ private extension Logger {
   /// Formats the given message.
   /// - Parameter message: message to be formatter.
   /// - Returns: a new formatted message.
-  static func format(title: String, message: Message, context: Context) -> Message {
+  func format(title: String, message: Message, context: Context) -> Message {
     let formattedMessage =
       """
       \(context):
       \(title): \(message)
 
       """
-    
-    return truncate(formattedMessage)
+
+    return truncated(formattedMessage)
   }
-  
-  /// Returns the filename from the given file path.
-  /// - Parameter filePath: the file path that contains the file name.
-  /// - Returns: the filename from the given file path.
-  static func fileName(from filePath: String) -> String {
-    return filePath.components(separatedBy: "/").last ?? "nil_file_name"
-  }
-  
+
   /// Truncates the given message if needed.
   /// - Parameter string: message to be trunked.
   /// - Returns: a `Message` truncated if longer than `maxMessagesLength`.
-  static func truncate(_ string: String) -> Message {
-    string.count >= maxMessagesLength ?
-      string.prefix(Int(maxMessagesLength)).appending(Self.truncatingToken) : string
+  func truncated(_ string: String) -> Message {
+    string.count >= maxMessagesLength ? string.prefix(Int(maxMessagesLength)).appending(truncatingToken) : string
   }
 }

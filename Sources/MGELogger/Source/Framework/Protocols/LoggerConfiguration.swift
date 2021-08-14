@@ -14,4 +14,7 @@ public protocol LoggerConfiguration {
   
   /// The `DateFormatter` that determines how the timestamp of the message will look like.
   var timestampFormatter: DateFormatter { get }
+  
+  /// The token appended at the end of a truncated string.
+  var truncatingToken: String { get }
 }

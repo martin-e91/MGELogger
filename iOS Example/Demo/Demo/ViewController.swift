@@ -8,9 +8,22 @@
 import UIKit
 import MGELogger
 
-let logger = Logger.self
-
 class ViewController: UIViewController {
+  private struct CustomLoggerConfiguration: LoggerConfiguration {
+    var minimumLogLevel: Logger.LogLevel { .trace }
+
+    var maxMessagesLength: UInt { 1000 }
+    
+    var timestampFormatter: DateFormatter {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "dd-MM-yyyy"
+      return formatter
+    }
+    
+    var truncatingToken: String { "|.." }
+  }
+
+  let logger = Logger(with: CustomLoggerConfiguration())
 
   override func viewDidLoad() {
     super.viewDidLoad()

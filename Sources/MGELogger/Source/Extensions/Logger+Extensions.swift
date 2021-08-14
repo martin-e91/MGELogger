@@ -7,22 +7,22 @@ import Foundation
 // MARK: - Public Extensions
 
 public extension Logger {
-  /// Whether the logger is disabled or not.
-  static var isDisabled: Bool {
-    !isEnabled
-  }
-}
-
-// MARK: - Internal Extensions
-
-extension Logger {
-  /// The default configuration for the logger.
+  /// Provides the default configuration for the logger.
   static var defaultConfiguration: LoggerConfiguration {
     DefaultConfiguration()
   }
 
+  /// Whether the logger is disabled or not.
+  var isDisabled: Bool {
+    !isEnabled
+  }
+}
+
+// MARK: - Private Extensions
+
+fileprivate extension Logger {
   /// The default configuration for the `Logger`.
-  private struct DefaultConfiguration: LoggerConfiguration {
+  struct DefaultConfiguration: LoggerConfiguration {
     public let minimumLogLevel: Logger.LogLevel = .info
     
     public let maxMessagesLength: UInt = 20_000
@@ -35,5 +35,7 @@ extension Logger {
       
       return formatter
     }()
+    
+    let truncatingToken: String = "<..>"
   }
 }
