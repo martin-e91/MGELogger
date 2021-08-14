@@ -155,7 +155,8 @@ private extension Logger {
     let formattedMessage =
       """
       \(context):
-      \(title): \(message)
+      \(title):
+      \(message)
 
       """
 

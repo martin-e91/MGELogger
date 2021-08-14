@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     var truncatingToken: String { "|.." }
   }
 
-  let logger = Logger(with: CustomLoggerConfiguration())
+  let logger = Logger()
 
   override func viewDidLoad() {
     super.viewDidLoad()
