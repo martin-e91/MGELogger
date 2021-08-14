@@ -13,5 +13,7 @@ public extension Logger {
 
 // MARK: - S
 
-/// Syntactic sugar for severity of the log levels.
-public typealias Severity = Int
+public extension Logger {
+  /// Syntactic sugar for severity of the log levels.
+  typealias Severity = Int
+}

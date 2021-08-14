@@ -1,10 +1,8 @@
 //
-//  Logger.swift
+//  MGELogger
 //
 
 import Foundation
-
-#warning("Add file logging")
 
 /// A logger for console logging.
 public final class Logger {
@@ -26,30 +24,17 @@ public final class Logger {
   
   /// The max characters length of a log message. Any message longer than this value will be truncated.
   /// Default value is `20_000`.
-  public let maxMessagesLength: Int
+  public let maxMessagesLength: UInt
   
   /// A `DateFormatter` for the timestamp in the log messages.
   private let timestampFormatter: DateFormatter
 
   // MARK: - Init
   
-  public init(
-    minimumLogLevel: LogLevel = .info,
-    maxMessagesLength: Int = 20_000,
-    timestampFormatter: DateFormatter? = nil
-  ) {
-    self.minimumLogLevel = minimumLogLevel
-    self.maxMessagesLength = maxMessagesLength
-    
-    if let timestampFormatter = timestampFormatter {
-      self.timestampFormatter = timestampFormatter
-    } else {
-      let formatter = DateFormatter()
-      formatter.locale = .current
-      formatter.timeZone = .current
-      formatter.dateFormat = "yy-MM-dd hh:mm:ssSSS"
-      self.timestampFormatter = formatter
-    }
+  public required init(configuration: LoggerConfiguration = Logger.defaultConfiguration) {
+    minimumLogLevel = configuration.minimumLogLevel
+    maxMessagesLength = configuration.maxMessagesLength
+    timestampFormatter = configuration.timestampFormatter
   }
 }
 
