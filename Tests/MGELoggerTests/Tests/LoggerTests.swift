@@ -85,6 +85,19 @@ final class LoggerTests: XCTestCase {
     XCTAssertTrue(mockLogHandler.messages.isEmpty)
   }
   
+  func testMultipleLogMessages() {
+    let mockLogHandler = MockLogHandler()
+
+    let sut = Logger(with: MockLoggerConfiguration(with: .custom(receiver: mockLogHandler)))
+
+    for _ in 0..<3 {
+      sut.trace(title: "", message: "")
+    }
+    
+    XCTAssertTrue(sut.logHandler is MockLogHandler)
+    XCTAssertEqual(mockLogHandler.messages.count, 3)
+  }
+  
   func testTraceMessage() throws {
     let mockLogHandler = MockLogHandler()
 
