@@ -10,13 +10,15 @@ import MGELogger
 
 class ViewController: UIViewController {
   private struct CustomLoggerConfiguration: LoggerConfiguration {
+    let destination: Logger.Log.Destination = .console
+    
     var minimumLogLevel: Logger.Log.Level { .trace }
 
     var maxMessagesLength: UInt { 1000 }
     
     var timestampFormatter: DateFormatter {
       let formatter = DateFormatter()
-      formatter.dateFormat = "dd-MM-yyyy"
+      formatter.dateFormat = "dd-MM-yyyy HH:MM:ssss"
       return formatter
     }
     
