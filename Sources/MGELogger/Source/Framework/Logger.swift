@@ -31,7 +31,7 @@ public final class Logger {
 
   // MARK: - Init
   
-  public required init(configuration: LoggerConfiguration = Logger.defaultConfiguration) {
+  public required init(configuration: LoggerConfiguration = DefaultConfiguration()) {
     minimumLogLevel = configuration.minimumLogLevel
     maxMessagesLength = configuration.maxMessagesLength
     timestampFormatter = configuration.timestampFormatter
