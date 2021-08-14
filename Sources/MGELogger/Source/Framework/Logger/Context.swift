@@ -12,24 +12,24 @@ public extension Logger {
     // MARK: - Stored Properties
 
     /// The timestamp of when event logged happened.
-    let timestamp: String
+    public let timestamp: String
     
     /// The log level for the event.
-    let logLevel: Log.Level
+    public let logLevel: Log.Level
 
     /// The path of the file in which the event logged happened.
-    let filePath: String
+    public let filePath: String
 
     /// The line of the file at which the event logged happened.
-    let line: UInt
+    public let line: UInt
     
     /// The line of the file in which the event logged happened.
-    let function: String
+    public let function: String
     
     // MARK: - Computed Properties
 
     /// The name of the file.
-    var fileName: String {
+    public var fileName: String {
       filePath.components(separatedBy: "/").last ?? "unknown_filename"
     }
     

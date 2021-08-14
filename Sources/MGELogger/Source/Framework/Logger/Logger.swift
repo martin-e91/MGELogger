@@ -23,13 +23,13 @@ public final class Logger {
   /// Default format is `yy-MM-dd hh:mm:ssSSS` and `current` `locale` and `timeZone`.
   let timestampFormatter: DateFormatter
   
+  /// The log handler to use when a log event arises.
+  let logHandler: LogHandler
+  
   /// The level for messages of this logger.
   /// All the message with a higher level are going to be printed.
   /// Default level is `info`.
   private(set) var minimumLogLevel: Log.Level
-  
-  /// The log handler to use when a log event arises.
-  let logHandler: LogHandler
   
   // MARK: - Init
 
