@@ -28,6 +28,9 @@ public final class Logger {
   /// Default level is `info`.
   private(set) var minimumLogLevel: Log.Level
   
+  /// The log handler to use when a log event arises.
+  let logHandler: LogHandler
+  
   // MARK: - Init
 
   /// Applies the given configuration to the logger.
@@ -37,6 +40,14 @@ public final class Logger {
     maxMessagesLength = configuration.maxMessagesLength
     timestampFormatter = configuration.timestampFormatter
     truncatingToken = configuration.truncatingToken
+    
+    switch configuration.destination {
+    case .console:
+      logHandler = StandardOutputLogHandler()
+      
+    case let .custom(logHandler):
+      self.logHandler = logHandler
+    }
   }
   
   // MARK: - Functions
@@ -62,7 +73,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func trace(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(
+    formatAndHandleLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .trace, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -74,7 +85,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func debug(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(
+    formatAndHandleLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .debug, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -86,7 +97,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func info(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(
+    formatAndHandleLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .info, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -98,7 +109,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func warning(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(
+    formatAndHandleLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .warning, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -110,7 +121,7 @@ public final class Logger {
   ///   - title: title to log.
   ///   - message: message to log.
   public func error(title: String, message: Message, file: String = #file, line: UInt = #line, function: String = #function) {
-    handleLog(
+    formatAndHandleLog(
       title: title,
       message: "\(message)",
       context: Context(logLevel: .error, timestamp: currentTimestamp, filePath: file, line: line, function: function)
@@ -127,16 +138,14 @@ private extension Logger {
   }
 
   /// Formats and logs the given message.
-  func handleLog(title: String, message: String, context: Context) {
+  func formatAndHandleLog(title: String, message: String, context: Context) {
     guard isEnabled, context.logLevel >= minimumLogLevel else {
       return
     }
     
     let formattedMessage = format(title: title, message: message, context: context)
-    
-    #if DEBUG
-    print(formattedMessage)
-    #endif
+
+    logHandler.handleLog(formattedMessage)
   }
 
   /// Formats the given message.

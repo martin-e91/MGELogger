@@ -9,5 +9,8 @@ public extension Logger.Log {
   enum Destination {
     /// The console destination.
     case console
+    
+    /// The custom log handler.
+    case custom(receiver: LogHandler)
   }
 }
