@@ -1,10 +1,9 @@
 name: Generate Documentation (Jazzy)
 
-on:
-  push:
-    branches:
-    - master
-    - develop
+on:      
+  workflow_dispatch:
+  release:
+    types: [ published ]
 
 jobs:
   publish:
